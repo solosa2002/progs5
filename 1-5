@@ -183,46 +183,43 @@ G2.printSolution()
 
 3:-
 
-import numpy as np 
+import numpy as np
 import pandas as pd
-data = pd.read_csv('trainingexample.csv')
-concepts = np.array(data.iloc[:,0:-1])
-print("\nInstances are:\n",concepts)
-target = np.array(data.iloc[:,-1])
-print("\nTarget Values are: ",target)
-def learn(concepts, target): 
-    specific_h = concepts[0].copy()
-    print("\nInitialization of specific_h and genearal_h")
-    print("\nSpecific hypothesis: ", specific_h)
-    general_h = [["?" for i in range(len(specific_h))] for i in range(len(specific_h))]
-    print("\nGeneric hypothesis: ",general_h) 
-    for i, h in enumerate(concepts):
-        print("\nInstance", i+1 , "is ", h)
-        if target[i] == "yes":
-            print("Instance is Positive ")
-            for x in range(len(specific_h)): 
-                if h[x]!= specific_h[x]: 
-                    specific_h[x] ='?' 
-                    general_h[x][x] ='?'
+data=pd.read_csv("prog3.csv")
+print(data)
+conditions=np.array(data.iloc[:, 0:-1])
+print("Instances are:\n", conditions)
+target=np.array(data.iloc[:, -1])
+print("\nFinal Target Values are: ",target,"\n")
+def eliminate(conditions, target):
+ print("Initialization of general and specific Boundaries: ")
+ specific=conditions[0].copy()
+ general=[]
+ print(specific,general)
+ for i,c in enumerate(conditions):
+ print("For Instance ",i+1)
+ if(target[i]=="yes"):
+ print("The instance",c, "is positive")
+ for x in range(len(c)):
+ if specific[x]!=c[x]:
+ specific[x]="?"
+ else:
+ print("The instance",c ,"is negative")
+ for x in range(len(c)):
+ if c[x]!=specific[x] and specific[x]!="?":
+ l=["?" for i in range(len(c))]
+ l[x]=specific[x]
+ general.append(l)
+ print(specific, general)
  
-    if target[i] == "no": 
-        print("Instance is Negative ")
-        for x in range(len(specific_h)): 
-            if h[x]!= specific_h[x]: 
-                general_h[x][x] = specific_h[x] 
-            else: 
-                general_h[x][x] = '?' 
+ for i in range(len(general)):
+ for j in range(len(general[0])):
+ if general[i][j]!="?" and general[i][j] not in specific:
+ general[i][j]='?'
  
-        print("Specific hypothesis after ", i+1, "Instance is ", specific_h) 
-        print("Generic hypothesis after ", i+1, "Instance is ", general_h)
-        print("\n")
-    indices = [i for i, val in enumerate(general_h) if val == ['?', '?', '?', '?', '?', '?']] 
-    for i in indices: 
-        general_h.remove(['?', '?', '?', '?', '?', '?']) 
-    return specific_h, general_h 
-s_final, g_final = learn(concepts, target)
-print("Final Specific_h: ", s_final, sep="\n")
-print("Final General_h: ", g_final, sep="\n")
+ return specific, general
+specific_hypothesis, general_hypothesis=eliminate(conditions, target)
+print("Specific Hypothesis: ",specific_hypothesis,"\nGeneral Hypthesis: ",general_hypothesis)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
