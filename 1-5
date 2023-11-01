@@ -191,36 +191,37 @@ conditions=np.array(data.iloc[:, 0:-1])
 print("Instances are:\n", conditions)
 target=np.array(data.iloc[:, -1])
 print("\nFinal Target Values are: ",target,"\n")
+
 def eliminate(conditions, target):
- print("Initialization of general and specific Boundaries: ")
- specific=conditions[0].copy()
- general=[]
- print(specific,general)
- for i,c in enumerate(conditions):
- print("For Instance ",i+1)
- if(target[i]=="yes"):
- print("The instance",c, "is positive")
- for x in range(len(c)):
- if specific[x]!=c[x]:
- specific[x]="?"
- else:
- print("The instance",c ,"is negative")
- for x in range(len(c)):
- if c[x]!=specific[x] and specific[x]!="?":
- l=["?" for i in range(len(c))]
- l[x]=specific[x]
- general.append(l)
- print(specific, general)
- 
- for i in range(len(general)):
- for j in range(len(general[0])):
- if general[i][j]!="?" and general[i][j] not in specific:
- general[i][j]='?'
- 
- return specific, general
+    print("Initialization of general and specific Boundaries: ")
+    specific=conditions[0].copy()
+    general=[]
+    print(specific,general)
+    for i,c in enumerate(conditions):
+        print("For Instance ",i+1)
+        if(target[i]=="yes"):
+            print("The instance",c, "is positive")
+            for x in range(len(c)):
+                if specific[x]!=c[x]:
+                    specific[x]="?"
+        else:
+            print("The instance",c ,"is negative")
+            for x in range(len(c)):
+                if c[x]!=specific[x] and specific[x]!="?":
+                    l=["?" for i in range(len(c))]
+                    l[x]=specific[x]
+                    general.append(l)
+        print(specific, general)
+       
+    for i in range(len(general)):
+            for j in range(len(general[0])):
+                if general[i][j]!="?" and general[i][j] not in specific:
+                    general[i][j]='?'
+
+    return specific, general
+
 specific_hypothesis, general_hypothesis=eliminate(conditions, target)
 print("Specific Hypothesis: ",specific_hypothesis,"\nGeneral Hypthesis: ",general_hypothesis)
-
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 4.
