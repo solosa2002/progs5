@@ -348,3 +348,38 @@ for i in range(epoch):
 print("Input: \n" + str(X))
 print("Actual Output: \n" + str(y))
 print("Predicted Output: \n" ,output)
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+6.
+#6 eswar
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import LabelEncoder
+from sklearn.naive_bayes import GaussianNB
+
+data = pd.read_csv('/content/drive/MyDrive/tennisdata.csv')
+print("The first 5 Values of data is :\n", data.head())
+
+X = data.iloc[:, :-1]
+print("\nThe First 5 values of the train data is\n", X.head())
+
+y = data.iloc[:, -1]
+print("\nThe First 5 values of train output is\n", y.head())
+
+convert = LabelEncoder()
+
+for i in list(data.columns)[:-1]:
+    X[i] = convert.fit_transform(X[i])
+
+print("\nNow the Train output is\n", X.head())
+
+y = convert.fit_transform(y)
+print("\nNow the Train output is\n",y)
+
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size = 0.20)
+
+classifier = GaussianNB()
+classifier.fit(X_train, y_train)
+
+print("Accuracy is:", accuracy_score(classifier.predict(X_test), y_test))
